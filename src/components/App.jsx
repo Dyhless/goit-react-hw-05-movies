@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
+import Header from './Header/Header';
 import Home from './pages/Home';
 import Movies from './pages/Movies';
 import MovieDetails from './pages/MovieDetails';
-import Header from './Header/Header';
 
 const App = () => {
   return (
