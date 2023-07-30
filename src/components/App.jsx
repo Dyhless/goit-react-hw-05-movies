@@ -1,16 +1,25 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import MoviesPage from './pages/MoviesPage';
+import { NavLink, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Movies from './pages/Movies';
+import MovieDetails from './pages/MovieDetails';
+import Header from './Header/Header';
 
 const App = () => {
   return (
-    <Router>
+    <div>
+      <Header>
+        <nav>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/movies">Movies</NavLink>
+        </nav>
+      </Header>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/movies" element={<MoviesPage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="/movies/:movieId" element={<MovieDetails />} />
       </Routes>
-    </Router>
+    </div>
   );
 };
 

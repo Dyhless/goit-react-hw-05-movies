@@ -1,7 +1,7 @@
 import React from 'react';
 
-const MoviesPage = () => {
+const Movies = () => {
   return <div>Movies Page</div>;
 };
 
-export default MoviesPage;
+export default Movies;
