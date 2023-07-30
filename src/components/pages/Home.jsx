@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../Header/Header';
 
 const Home = () => {
+  useEffect(() => {
+    //HTTP
+  }, []);
+
   return (
     <>
       <Header />

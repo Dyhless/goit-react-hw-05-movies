@@ -1,17 +1,27 @@
 import React from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
+import styled from 'styled-components';
 import Header from './Header/Header';
 import Home from './pages/Home';
 import Movies from './pages/Movies';
 import MovieDetails from './pages/MovieDetails';
+import { Container } from './App.styled';
+
+const StyledLink = styled(NavLink)`
+  color: black;
+
+  &.active {
+    color: orange;
+  }
+`;
 
 const App = () => {
   return (
-    <div>
+    <Container>
       <Header>
         <nav>
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/movies">Movies</NavLink>
+          <StyledLink to="/">Home</StyledLink>
+          <StyledLink to="/movies">Movies</StyledLink>
         </nav>
       </Header>
       <Routes>
@@ -19,7 +29,7 @@ const App = () => {
         <Route path="/movies" element={<Movies />} />
         <Route path="/movies/:movieId" element={<MovieDetails />} />
       </Routes>
-    </div>
+    </Container>
   );
 };
 
