@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Movies from './pages/Movies';
 import MovieDetails from './pages/MovieDetails';
 import { Container } from './App.styled';
+import { Layout } from './Layout/Layout';
 
 const StyledLink = styled(NavLink)`
   color: black;
@@ -25,11 +26,13 @@ const App = () => {
         </nav>
       </Header>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/movies" element={<Movies />} />
-        <Route path="/movies/:movieId" element={<MovieDetails />} />
-        <Route path="/movies/:movieId/cast" element={<MovieDetails />} />
-        <Route path="/movies/:movieId/reviews" element={<MovieDetails />} />
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/movies/:movieId" element={<MovieDetails />} />
+          <Route path="/movies/:movieId/cast" element={<MovieDetails />} />
+          <Route path="/movies/:movieId/reviews" element={<MovieDetails />} />
+        </Route>
       </Routes>
     </Container>
   );

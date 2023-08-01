@@ -1,11 +1,15 @@
-import React from 'react';
-import { getMovieDetails, getMovieCredits, getMovieReviews } from '../API';
+import React, { useEffect } from 'react';
+// import { getMovieDetails, getMovieCredits, getMovieReviews } from '../API';
 import { useParams } from 'react-router-dom';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
-  console.log(movieId);
-  return <>Movies Details</>;
+
+  useEffect(() => {
+    // HTTP запрос
+  }, []);
+
+  return <>Movies Details: {movieId}</>;
 };
 
 export default MovieDetails;
