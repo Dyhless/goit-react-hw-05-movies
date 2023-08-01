@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Header from '../Header/Header';
 
 const Home = () => {
   useEffect(() => {
@@ -8,7 +7,6 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       <div>Home</div>
     </>
   );
