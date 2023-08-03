@@ -1,12 +1,24 @@
+// MovieDetails.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
-import { getMovieDetails, getMovieCredits, getMovieReviews } from '../API';
+import { getMovieDetails } from '../API';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
 
-  useEffect(() => {}, [movieId]);
+  useEffect(() => {
+    const fetchMovieData = async () => {
+      try {
+        const details = await getMovieDetails(movieId);
+        setMovieDetails(details);
+      } catch (error) {
+        console.error('Failed to fetch movie details', error);
+      }
+    };
+
+    fetchMovieData();
+  }, [movieId]);
 
   if (!movieDetails) {
     return <div>Loading...</div>;
