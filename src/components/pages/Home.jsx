@@ -6,7 +6,6 @@ const Home = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
 
   useEffect(() => {
-    // Выполните запрос при инициализации компонента
     getTrendingMovies().then(data => {
       setTrendingMovies(data);
     });
