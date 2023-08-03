@@ -1,13 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getTrendingMovies } from '../API';
 
 const Home = () => {
+  const [trendingMovies, setTrendingMovies] = useState([]);
+
   useEffect(() => {
-    //HTTP
+    // Выполните запрос при инициализации компонента
+    getTrendingMovies().then(data => {
+      setTrendingMovies(data);
+    });
   }, []);
 
   return (
     <>
-      <div>Home</div>
+      <h1>Popular Movies</h1>
+      <ul>
+        {trendingMovies.map(movie => (
+          <li key={movie.id}>
+            <Link to={`movies/${movie.id}`}>{movie.title}</Link>
+          </li>
+        ))}
+      </ul>
     </>
   );
 };
