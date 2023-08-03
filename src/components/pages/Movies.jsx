@@ -1,41 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { searchMovies } from '../API';
 
 const Movies = () => {
-  // useEffect(() => {
-  //   //HTTP
-  // }, []);
+  const [movies, setMovies] = useState([]);
+  const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    searchMovies('popular').then(data => {
+      setMovies(data);
+    });
+  }, []);
+
+  const handleSearch = event => {
+    event.preventDefault();
+    searchMovies(query).then(data => {
+      setMovies(data);
+    });
+  };
 
   return (
     <div>
-      {[
-        'mov1',
-        'mov2',
-        'mov3',
-        'mov4',
-        'mov5',
-        'mov6',
-        'mov7',
-        'mov8',
-        'mov9',
-        'mov10',
-        'mov11',
-        'mov12',
-        'mov13',
-        'mov14',
-        'mov15',
-        'mov16',
-        'mov17',
-        'mov18',
-        'mov19',
-        'mov20',
-      ].map(mov => {
-        return (
-          <Link key={mov} to={`${mov}`}>
-            {mov}
-          </Link>
-        );
-      })}
+      <form onSubmit={handleSearch}>
+        <input
+          type="text"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="Search for movies..."
+        />
+        <button type="submit">Search</button>
+      </form>
+
+      {movies.map(movie => (
+        <Link key={movie.id} to={`movies/${movie.id}`}>
+          {movie.title}
+        </Link>
+      ))}
     </div>
   );
 };

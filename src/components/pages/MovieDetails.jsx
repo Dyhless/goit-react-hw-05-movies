@@ -1,4 +1,3 @@
-// MovieDetails.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { getMovieDetails, getMovieCredits, getMovieReviews } from '../API';
