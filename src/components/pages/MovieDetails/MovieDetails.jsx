@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { getMovieDetails } from '../../API';
+import Loader from 'components/Loader/Loader';
 
 const MovieDetails = () => {
   const { movieId } = useParams();

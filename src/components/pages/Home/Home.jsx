@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTrendingMovies } from '../../API';
+import Loader from 'components/Loader/Loader';
 
 const Home = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
