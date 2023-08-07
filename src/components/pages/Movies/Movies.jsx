@@ -6,18 +6,32 @@ import Loader from 'components/Loader/Loader';
 const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    searchMovies('popular').then(data => {
-      setMovies(data);
-    });
+    searchMovies('popular')
+      .then(data => {
+        setMovies(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Failed to fetch popular movies', error);
+        setLoading(false);
+      });
   }, []);
 
   const handleSearch = event => {
     event.preventDefault();
-    searchMovies(query).then(data => {
-      setMovies(data);
-    });
+    setLoading(true);
+    searchMovies(query)
+      .then(data => {
+        setMovies(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Failed to search movies', error);
+        setLoading(false);
+      });
   };
 
   return (
@@ -32,11 +46,17 @@ const Movies = () => {
         <button type="submit">Search</button>
       </form>
 
-      {movies.map(movie => (
-        <Link key={movie.id} to={`movies/${movie.id}`}>
-          {movie.title}
-        </Link>
-      ))}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {movies.map(movie => (
+            <Link key={movie.id} to={`movies/${movie.id}`}>
+              {movie.title}
+            </Link>
+          ))}
+        </>
+      )}
     </div>
   );
 };
