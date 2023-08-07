@@ -1,12 +1,12 @@
 // App.jsx
 import React, { Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { lazy } from 'react';
 
-// Импортируйте компоненты с помощью React.lazy()
-const Home = React.lazy(() => import('./pages/Home'));
-const Movies = React.lazy(() => import('./pages/Movies'));
-const MovieDetails = React.lazy(() => import('./pages/MovieDetails'));
-const Layout = React.lazy(() => import('./Layout/Layout'));
+const Home = lazy(() => import('./pages/Home/Home'));
+const Movies = lazy(() => import('./pages/Movies/Movies'));
+const MovieDetails = lazy(() => import('./pages/MovieDetails/MovieDetails'));
+const Layout = lazy(() => import('./Layout/Layout'));
 
 const App = () => {
   return (
@@ -43,7 +43,6 @@ const App = () => {
             </Suspense>
           }
         >
-          {/* Добавьте Suspense для вложенных маршрутов */}
           <Route index element={<div>Movie Details</div>} />
           <Route path="cast" element={<div>Cast</div>} />
           <Route path="reviews" element={<div>Reviews</div>} />

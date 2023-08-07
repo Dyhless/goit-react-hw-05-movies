@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { searchMovies } from '../API';
+import { searchMovies } from '../../API';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
