@@ -7,30 +7,6 @@ export const MoviesContainer = styled.div`
   padding: 20px;
 `;
 
-export const SearchForm = styled.form`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  margin-top: 75px;
-
-  input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-
-  button {
-    padding: 10px 20px;
-    background-color: #c49dbf;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-`;
-
 export const MoviesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 

@@ -2,19 +2,17 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { searchMovies } from '../../API';
 import Loader from 'components/Loader/Loader';
-import {
-  MoviesContainer,
-  SearchForm,
-  MoviesGrid,
-  MovieCard,
-} from './Movies.styled';
+import LoadMoreButton from 'components/LoadMoreButton/LoadMoreButton';
+import SearchBar from 'components/SearchForm/SearchForm';
+import { MoviesContainer, MoviesGrid, MovieCard } from './Movies.styled';
 
 const Movies = () => {
-  const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
+  const [searchClicked, setSearchClicked] = useState(false);
   const [isLoadMoreBtnVisible, setIsLoadMoreBtnVisible] = useState(false);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     if (query === '') {
@@ -33,6 +31,7 @@ const Movies = () => {
         }));
         setMovies(moviesWithAbsolutePaths);
         setIsLoadMoreBtnVisible(false);
+        setPage(1);
       } catch (error) {
         console.error('Failed to search movies', error);
       } finally {
@@ -43,39 +42,55 @@ const Movies = () => {
     fetchMoviesByQuery();
   }, [query]);
 
-  const handleSearch = event => {
-    event.preventDefault();
+  const loadMore = async () => {
+    setPage(prevPage => prevPage + 1);
+    setLoading(true);
+    try {
+      const data = await searchMovies(query, page + 1);
+      if (data.length === 0) {
+        setIsLoadMoreBtnVisible(false);
+        return;
+      }
+      const moviesWithAbsolutePaths = data.map(movie => ({
+        ...movie,
+        poster_path: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+          : null,
+      }));
+      setMovies(prevMovies => [...prevMovies, ...moviesWithAbsolutePaths]);
+    } catch (error) {
+      console.error('Failed to load more movies', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = newQuery => {
     setMovies([]);
     setPage(1);
-    setQuery(event.target.value);
+    setQuery(newQuery);
+    setSearchClicked(true);
   };
 
   return (
     <MoviesContainer>
-      <SearchForm onSubmit={handleSearch}>
-        <input
-          type="text"
-          value={query}
-          onChange={handleSearch}
-          placeholder="Search for movies..."
-        />
-        <button type="submit">Search</button>
-      </SearchForm>
-
+      <SearchBar onSearch={handleSearch} />
       {loading && <Loader />}
-
-      <MoviesGrid>
-        {movies.map(
-          movie =>
-            movie.poster_path !== null && (
-              <MovieCard key={movie.id}>
-                <img src={movie.poster_path} alt={movie.title} />
-                <h3>{movie.title}</h3>
-                <p>{movie.release_date}</p>
-              </MovieCard>
-            )
-        )}
-      </MoviesGrid>
+      {searchClicked && (
+        <MoviesGrid>
+          {movies.map(
+            movie =>
+              movie.poster_path !== null && (
+                <MovieCard key={movie.id}>
+                  <img src={movie.poster_path} alt={movie.title} />
+                  <h3>{movie.title}</h3>
+                  <p>{movie.release_date}</p>
+                </MovieCard>
+              )
+          )}
+        </MoviesGrid>
+      )}
+      {isLoadMoreBtnVisible && <LoadMoreButton onClick={loadMore} />}
     </MoviesContainer>
   );
 };
