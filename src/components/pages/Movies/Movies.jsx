@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { searchMovies } from '../../API';
@@ -59,6 +60,16 @@ const Movies = () => {
       )}
     </div>
   );
+};
+
+Movies.propTypes = {
+  filteredMovies: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      poster_path: PropTypes.string,
+    })
+  ),
 };
 
 export default Movies;

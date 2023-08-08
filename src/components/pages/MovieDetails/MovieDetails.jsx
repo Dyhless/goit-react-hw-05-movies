@@ -34,6 +34,10 @@ const MovieDetails = () => {
   return (
     <>
       <h1>Movies Details: {movieDetails.title}</h1>
+      <img
+        src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
+        alt={movieDetails.title}
+      />
       <ul>
         <li>
           <Link to={`movies/${movieId}/cast`}>Cast</Link>

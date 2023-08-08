@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getTrendingMovies } from '../../API';
@@ -37,6 +38,16 @@ const Home = () => {
       )}
     </>
   );
+};
+
+Home.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      profile_path: PropTypes.string,
+    })
+  ),
 };
 
 export default Home;
