@@ -28,11 +28,13 @@ const Home = () => {
         <>
           <h1>Popular Movies</h1>
           <ul>
-            {trendingMovies.map(movie => (
-              <li key={movie.id}>
-                <Link to={`movies/${movie.id}`}>{movie.title}</Link>
-              </li>
-            ))}
+            {trendingMovies.map(movie =>
+              movie.title && movie.id ? (
+                <li key={movie.id}>
+                  <Link to={`movies/${movie.id}`}>{movie.title}</Link>
+                </li>
+              ) : null
+            )}
           </ul>
         </>
       )}

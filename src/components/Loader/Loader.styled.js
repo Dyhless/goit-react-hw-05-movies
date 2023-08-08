@@ -1,11 +1,18 @@
 import styled from 'styled-components';
 
-export const LoderWrapper = styled.div`
-  visible={true}
-  height="80"
-  width="80"
-  ariaLabel="vortex-loading"
-  wrapperStyle={{}}
-  wrapperClass="vortex-wrapper"
-  colors={['red', 'green', 'blue', 'yellow', 'orange', 'purple']}
+export const LoaderWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Прозрачный фон для подложки */
+  z-index: 9999;
+`;
+
+export const LoaderContainer = styled.div`
+  display: inline-block;
 `;

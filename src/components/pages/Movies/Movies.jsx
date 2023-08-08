@@ -1,64 +1,82 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { searchMovies } from '../../API';
 import Loader from 'components/Loader/Loader';
+import {
+  MoviesContainer,
+  SearchForm,
+  MoviesGrid,
+  MovieCard,
+} from './Movies.styled';
 
 const Movies = () => {
-  const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoadMoreBtnVisible, setIsLoadMoreBtnVisible] = useState(false);
 
   useEffect(() => {
-    searchMovies('popular')
-      .then(data => {
-        setMovies(data);
+    if (query === '') {
+      return;
+    }
+
+    const fetchMoviesByQuery = async () => {
+      setLoading(true);
+      try {
+        const data = await searchMovies(query);
+        const moviesWithAbsolutePaths = data.map(movie => ({
+          ...movie,
+          poster_path: movie.poster_path
+            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+            : null,
+        }));
+        setMovies(moviesWithAbsolutePaths);
+        setIsLoadMoreBtnVisible(false);
+      } catch (error) {
+        console.error('Failed to search movies', error);
+      } finally {
         setLoading(false);
-      })
-      .catch(error => {
-        console.error('Failed to fetch popular movies', error);
-        setLoading(false);
-      });
-  }, []);
+      }
+    };
+
+    fetchMoviesByQuery();
+  }, [query]);
 
   const handleSearch = event => {
     event.preventDefault();
-    setLoading(true);
-    searchMovies(query)
-      .then(data => {
-        setMovies(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Failed to search movies', error);
-        setLoading(false);
-      });
+    setMovies([]);
+    setPage(1);
+    setQuery(event.target.value);
   };
 
   return (
-    <div>
-      <form onSubmit={handleSearch}>
+    <MoviesContainer>
+      <SearchForm onSubmit={handleSearch}>
         <input
           type="text"
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={handleSearch}
           placeholder="Search for movies..."
         />
         <button type="submit">Search</button>
-      </form>
+      </SearchForm>
 
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          {movies.map(movie => (
-            <Link key={movie.id} to={`movies/${movie.id}`}>
-              {movie.title}
-            </Link>
-          ))}
-        </>
-      )}
-    </div>
+      {loading && <Loader />}
+
+      <MoviesGrid>
+        {movies.map(
+          movie =>
+            movie.poster_path !== null && (
+              <MovieCard key={movie.id}>
+                <img src={movie.poster_path} alt={movie.title} />
+                <h3>{movie.title}</h3>
+                <p>{movie.release_date}</p>
+              </MovieCard>
+            )
+        )}
+      </MoviesGrid>
+    </MoviesContainer>
   );
 };
 
