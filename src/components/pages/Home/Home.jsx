@@ -29,6 +29,10 @@ const Home = () => {
     loadTrendingMovies();
   }, []);
 
+  const filteredMovies = trendingMovies.filter(
+    movie => movie.title && movie.id
+  );
+
   return (
     <>
       {loading ? (
@@ -37,21 +41,19 @@ const Home = () => {
         <>
           <Title>Popular Movies</Title>
           <MovieList>
-            {trendingMovies.map(movie =>
-              movie.title && movie.id ? (
-                <li key={movie.id}>
-                  <MovieLink to={`/movies/${movie.id}`}>
-                    <MoviePoster
-                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                      alt={movie.title}
-                    />
-                    <MovieTitle data-is-long-title={movie.title.length > 25}>
-                      {movie.title}
-                    </MovieTitle>
-                  </MovieLink>
-                </li>
-              ) : null
-            )}
+            {filteredMovies.map(movie => (
+              <li key={movie.id}>
+                <MovieLink to={`/movies/${movie.id}`}>
+                  <MoviePoster
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    alt={movie.title}
+                  />
+                  <MovieTitle data-is-long-title={movie.title.length > 25}>
+                    {movie.title}
+                  </MovieTitle>
+                </MovieLink>
+              </li>
+            ))}
           </MovieList>
         </>
       )}
