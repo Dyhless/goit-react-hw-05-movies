@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { searchMovies } from '../../API';
 import Loader from 'components/Loader/Loader';
 import LoadMoreButton from 'components/LoadMoreButton/LoadMoreButton';
@@ -12,12 +13,15 @@ import {
 } from './Movies.styled';
 
 const Movies = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [searchClicked, setSearchClicked] = useState(false);
   const [isLoadMoreBtnVisible, setIsLoadMoreBtnVisible] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(location.state?.query || ''); // Здесь изменили
 
   useEffect(() => {
     if (query === '') {
@@ -75,6 +79,8 @@ const Movies = () => {
     setPage(1);
     setQuery(newQuery);
     setSearchClicked(true);
+
+    navigate('/movies', { state: { query: newQuery } });
   };
 
   return (

@@ -16,7 +16,7 @@ export const BackButton = styled.button`
   cursor: pointer;
   color: #120083;
   font-size: 20px;
-  box-shadow: inset 0 3px 4px #ffffff, inset 0 -3px 4px #B0B49D;
+  box-shadow: inset 0 3px 4px #ffffff, inset 0 -3px 4px #FAAD6F;
   transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
   &:hover,
   &:focus {
