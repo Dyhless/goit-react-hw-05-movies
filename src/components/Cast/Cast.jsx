@@ -1,0 +1,68 @@
+import PropTypes from 'prop-types';
+import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Loader from '../Loader/Loader';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getMovieCredits } from '../API';
+import { Img, List, Text } from './Cast.styled';
+
+const Cast = () => {
+  const { movieId } = useParams();
+  const [actors, setActors] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const onActorsOfMovie = async () => {
+      setLoading(true);
+      try {
+        const actors = await getMovieCredits(movieId);
+        setActors(actors);
+      } catch {
+        toast.error('Sorry. No info.', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    onActorsOfMovie();
+  }, [movieId]);
+
+  return (
+    <div>
+      <ToastContainer transition={Slide} />
+      {loading && <Loader />}
+      <List>
+        {actors.map(({ id, profile_path, name, character }) => (
+          <li key={id}>
+            <Img
+              width="200px"
+              src={
+                profile_path
+                  ? `https://image.tmdb.org/t/p/w500${profile_path}`
+                  : `https://www.bilo-teploservice.info-gkh.com.ua/assets/images/noimage.png`
+              }
+              alt={name}
+            />
+            <Text>{name}</Text>
+            <Text>Character: {character}</Text>
+          </li>
+        ))}
+      </List>
+    </div>
+  );
+};
+
+Cast.propTypes = {
+  actors: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      profile_path: PropTypes.string,
+      character: PropTypes.number.isRequired,
+    })
+  ),
+};
+export default Cast;
