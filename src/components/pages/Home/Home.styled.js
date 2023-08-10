@@ -1,6 +1,11 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
+const commonHover = `
+  transform: scale(1.1);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+`;
+
 export const Title = styled.h1`
   @media screen and (max-width: 475.99px) {
     font-size: 36px;
@@ -22,12 +27,9 @@ export const MovieList = styled.ul`
   max-width: calc(100vw - 48px);
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 28px;
-  margin-top: 56px;
-  margin-bottom: 20px;
+  margin: 56px auto 20px;
   padding: 0;
   list-style: none;
-  margin-left: auto;
-  margin-right: auto;
 `;
 
 export const MovieLink = styled(NavLink)`
@@ -43,8 +45,7 @@ export const MovieLink = styled(NavLink)`
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+    ${commonHover}
   }
 `;
 
@@ -57,10 +58,11 @@ export const MoviePoster = styled.img`
 
 export const MovieTitle = styled.div`
   font-size: 16px;
+  font-weight: bold;
   text-align: center;
-  max-height: 44px; 
+  max-height: 44px;
   overflow: hidden;
-  white-space: nowrap; 
+  white-space: nowrap;
   text-overflow: ellipsis;
   &[data-is-long-title="true"] {
     white-space: normal;

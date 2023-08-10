@@ -1,6 +1,20 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
+const commonLinkStyles = `
+  display: inline-block;
+  text-decoration: none;
+  padding: 14px;
+  font-weight: 600;
+  font-size: 22px;
+  color: #FF6500;
+  transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    color: #00E6FA;
+  }
+`;
+
 export const HeaderWrap = styled.header`
   position: fixed;
   top: 0;
@@ -9,7 +23,6 @@ export const HeaderWrap = styled.header`
   height: 56px;
   display: flex;
   align-items: center;
-
   padding-top: 6px;
   padding-bottom: 6px;
   background-color: rgba(0, 0, 0, 0.7);
@@ -24,15 +37,5 @@ export const List = styled.ul`
 `;
 
 export const Link = styled(NavLink)`
-  display: inline-block;
-  text-decoration: none;
-  padding: 14px;
-  font-weight: 600;
-  font-size: 22px;
-  color: #FF6500;
-  transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    color: #00E6FA;
-  }
+  ${commonLinkStyles}
 `;

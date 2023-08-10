@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams, Link } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { getMovieDetails } from '../../API';
 import {
   BackButton,
-  BackLink,
   Container,
   Img,
   LinkInfo,
@@ -48,10 +47,9 @@ const MovieDetails = () => {
   return (
     <>
       <ToastContainer transition={Slide} />
-      <BackLink to="/movies">
+      <Link to="/movies">
         <BackButton type="button">Go back</BackButton>
-      </BackLink>
-      {loading && <Loader />}
+      </Link>
       <Container>
         {poster_path ? (
           <Img

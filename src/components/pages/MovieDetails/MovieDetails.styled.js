@@ -1,14 +1,24 @@
 import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const BackButton = styled.button`
-  margin-top: 90px;
-  margin-bottom: 20px;
-  margin-left: 32px;
+const linkStyles = `
+  text-decoration: none;
+  color: black;
+
+  &:hover {
+    color: #00BFFF;
+  }
+`;
+
+const flexCenterStyles = `
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 16px;
+`;
+
+export const BackButton = styled.button`
+  margin: 90px 16px 20px 32px;
+  ${flexCenterStyles}
   width: 120px;
   padding: 10px;
   border-radius: 16px;
@@ -18,6 +28,7 @@ export const BackButton = styled.button`
   font-size: 20px;
   box-shadow: inset 0 3px 4px #ffffff, inset 0 -3px 4px #FAAD6F;
   transition: box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+
   &:hover,
   &:focus {
     box-shadow: 0 3px 4px #AEE6E2, 0 -3px 4px #ffffff;
@@ -26,7 +37,7 @@ export const BackButton = styled.button`
 `;
 
 export const BackLink = styled(NavLink)`
-  text-decoration: none;
+  ${linkStyles};
 `;
 
 export const Container = styled.div`
@@ -34,8 +45,7 @@ export const Container = styled.div`
     display: block;
   }
   display: flex;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 0 20px;
   gap: 24px;
 `;
 
@@ -49,10 +59,9 @@ export const Img = styled.img`
 export const List = styled.ul`
   display: flex;
   gap: 12px;
-  list-style: none;
   margin: 0;
   padding: 0;
-  list-style-type: none;
+  list-style: none;
 `;
 
 export const SubTitle = styled.h2`
@@ -66,18 +75,12 @@ export const AddInfoList = styled.ul`
   list-style: none;
   margin-left: 20px;
   padding: 0;
-  list-style-type: none;
 `;
 
 export const LinkInfo = styled(Link)`
-  text-decoration: none;
+  ${linkStyles};
   font-weight: 600;
   font-size: 18px;
-  color: black;
-
-  &:hover {
-    color: #00BFFF;
-  }
 `;
 
 export const Hr = styled.hr`

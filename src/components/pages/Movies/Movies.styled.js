@@ -18,6 +18,7 @@ export const MoviesGrid = styled.ul`
   list-style: none;
   margin-left: auto;
   margin-right: auto;
+   
 `;
 
 export const MovieLink = styled(NavLink)`
@@ -62,6 +63,7 @@ export const MoviePoster = styled.img`
 
 export const MovieTitle = styled.div`
   font-size: 16px;
+  font-weight: bold;
   text-align: center;
   max-height: 44px; 
   overflow: hidden;

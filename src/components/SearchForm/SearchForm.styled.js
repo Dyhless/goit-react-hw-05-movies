@@ -1,18 +1,9 @@
 import styled from 'styled-components';
 
-export const SearchForm = styled.form`
+const commonButtonStyles = `
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  margin-top: 75px;
-`;
-
-export const SearchButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
   width: 100px;
   padding: 10px;
   margin-left: 10px;
@@ -28,6 +19,19 @@ export const SearchButton = styled.button`
     box-shadow: 0 3px 4px #AEE6E2, 0 -3px 4px #ffffff;
     color: #00BFFF;
   }
+`;
+
+export const SearchForm = styled.form`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-top: 75px;
+`;
+
+export const SearchButton = styled.button`
+  ${commonButtonStyles}
+  margin-right: 16px;
 `;
 
 export const SearchInput = styled.input`
