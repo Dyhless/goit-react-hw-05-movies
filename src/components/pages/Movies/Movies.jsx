@@ -94,7 +94,7 @@ const Movies = () => {
                         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                         alt={movie.title}
                       />
-                      <MovieTitle isLongTitle={movie.title.length > 25}>
+                      <MovieTitle data-is-long-title={movie.title.length > 25}>
                         {movie.title}
                       </MovieTitle>
                     </MovieLink>

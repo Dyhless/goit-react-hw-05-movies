@@ -67,7 +67,8 @@ export const MovieTitle = styled.div`
   overflow: hidden;
   white-space: nowrap; 
   text-overflow: ellipsis;
-  ${({ isLongTitle }) => isLongTitle && `
+  &[data-is-long-title="true"] {
     white-space: normal;
-  `}
+  }
 `;
+

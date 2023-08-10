@@ -8,7 +8,7 @@ export const Title = styled.h1`
   margin-top: 90px;
   text-align: center;
   font-size: 46px;
-  color: #4569FF;
+  color: #FF6500;
 `;
 
 export const MovieList = styled.ul`
@@ -62,7 +62,7 @@ export const MovieTitle = styled.div`
   overflow: hidden;
   white-space: nowrap; 
   text-overflow: ellipsis;
-  ${({ isLongTitle }) => isLongTitle && `
+  &[data-is-long-title="true"] {
     white-space: normal;
-  `}
+  }
 `;

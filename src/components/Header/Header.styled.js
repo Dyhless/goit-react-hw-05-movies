@@ -29,7 +29,7 @@ export const Link = styled(NavLink)`
   padding: 14px;
   font-weight: 600;
   font-size: 22px;
-  color: white;
+  color: #FF6500;
   transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {

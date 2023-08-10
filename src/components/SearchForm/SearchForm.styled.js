@@ -26,6 +26,7 @@ export const SearchButton = styled.button`
   &:hover,
   &:focus {
     box-shadow: 0 3px 4px #AEE6E2, 0 -3px 4px #ffffff;
+    color: #00BFFF;
   }
 `;
 

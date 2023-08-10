@@ -1,7 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
-import { getMovieDetails } from '../../API';
+import { Outlet, useParams } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
+import { getMovieDetails } from '../../API';
+import {
+  BackButton,
+  BackLink,
+  Container,
+  Img,
+  LinkInfo,
+  Hr,
+  SubTitle,
+  AddInfoList,
+  List,
+} from './MovieDetails.styled';
+import { ToastContainer, Slide } from 'react-toastify';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
@@ -31,21 +43,49 @@ const MovieDetails = () => {
     return <div>Loading...</div>;
   }
 
+  const { title, popularity, overview, genres, poster_path } = movieDetails;
+
   return (
     <>
-      <h1>Movies Details: {movieDetails.title}</h1>
-      <img
-        src={`https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`}
-        alt={movieDetails.title}
-      />
-      <ul>
+      <ToastContainer transition={Slide} />
+      <BackLink to="/movies">
+        <BackButton type="button">Go back</BackButton>
+      </BackLink>
+      {loading && <Loader />}
+      <Container>
+        {poster_path ? (
+          <Img
+            width="300px"
+            src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+            alt={title}
+          />
+        ) : (
+          <div>No poster available</div>
+        )}
+        <div>
+          <h1>{title}</h1>
+          <p>User score: {popularity}</p>
+          <h2>Overview</h2>
+          <p>{overview}</p>
+          <h2>Genres</h2>
+          <List>
+            {genres.map(genre => (
+              <li key={genre.id}>{genre.name}</li>
+            ))}
+          </List>
+        </div>
+      </Container>
+      <Hr />
+      <SubTitle>Additional information</SubTitle>
+      <AddInfoList>
         <li>
-          <Link to={`movies/${movieId}/cast`}>Cast</Link>
+          <LinkInfo to={`/movies/${movieId}/cast`}>Cast</LinkInfo>
         </li>
         <li>
-          <Link to={`movies/${movieId}/reviews`}>Reviews</Link>
+          <LinkInfo to={`/movies/${movieId}/reviews`}>Reviews</LinkInfo>
         </li>
-      </ul>
+      </AddInfoList>
+      <Hr />
       <Outlet />
     </>
   );
