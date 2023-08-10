@@ -5,9 +5,8 @@ import Loader from 'components/Loader/Loader';
 import LoadMoreButton from 'components/LoadMoreButton/LoadMoreButton';
 import SearchBar from 'components/SearchForm/SearchForm';
 import {
-  MoviesContainer,
   MoviesGrid,
-  MovieCard,
+  MovieTitle,
   MovieLink,
   MoviePoster,
 } from './Movies.styled';
@@ -79,25 +78,35 @@ const Movies = () => {
   };
 
   return (
-    <MoviesContainer>
-      <SearchBar onSearch={handleSearch} />
-      {loading && <Loader />}
-      {searchClicked && (
-        <MoviesGrid>
-          {movies.map(
-            movie =>
-              movie.poster_path !== null && (
-                <MovieCard key={movie.id}>
-                  <MovieLink to={`/movies/${movie.id}`}>
-                    <MoviePoster src={movie.poster_path} alt={movie.title} />
-                  </MovieLink>
-                </MovieCard>
-              )
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <SearchBar onSearch={handleSearch} />
+          {searchClicked && (
+            <MoviesGrid>
+              {movies.map(movie =>
+                movie.poster_path ? (
+                  <li key={movie.id}>
+                    <MovieLink to={`/movies/${movie.id}`}>
+                      <MoviePoster
+                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                        alt={movie.title}
+                      />
+                      <MovieTitle isLongTitle={movie.title.length > 25}>
+                        {movie.title}
+                      </MovieTitle>
+                    </MovieLink>
+                  </li>
+                ) : null
+              )}
+            </MoviesGrid>
           )}
-        </MoviesGrid>
+          {isLoadMoreBtnVisible && <LoadMoreButton onClick={loadMore} />}
+        </>
       )}
-      {isLoadMoreBtnVisible && <LoadMoreButton onClick={loadMore} />}
-    </MoviesContainer>
+    </>
   );
 };
 
