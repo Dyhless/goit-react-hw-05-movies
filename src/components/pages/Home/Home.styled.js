@@ -8,9 +8,10 @@ export const Title = styled.h1`
   margin-top: 90px;
   text-align: center;
   font-size: 46px;
+  color: #4569FF;
 `;
 
-export const List = styled.ul`
+export const MovieList = styled.ul`
   @media screen and (max-width: 475.99px) {
     display: flex;
     flex-direction: column;
@@ -29,27 +30,39 @@ export const List = styled.ul`
   margin-right: auto;
 `;
 
-export const Link = styled(NavLink)`
+export const MovieLink = styled(NavLink)`
   width: 200px;
-  height: 342px;
+  height: auto;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  flex-wrap: wrap;
-  gap: 20px;
-  color: white;
+  align-items: center;
+  gap: 8px;
+  color: black;
   text-decoration: none;
   transition: transform 250ms linear, box-shadow 250ms linear;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
 
   &:hover {
     transform: scale(1.1);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3),
-      inset 0px -6px 12px rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
   }
 `;
 
-export const Img = styled.img`
+export const MoviePoster = styled.img`
   width: 100%;
   height: auto;
+  max-height: 70%;
+  object-fit: contain;
+`;
+
+export const MovieTitle = styled.div`
+  font-size: 16px;
+  text-align: center;
+  max-height: 44px; 
+  overflow: hidden;
+  white-space: nowrap; 
+  text-overflow: ellipsis;
+  ${({ isLongTitle }) => isLongTitle && `
+    white-space: normal;
+  `}
 `;

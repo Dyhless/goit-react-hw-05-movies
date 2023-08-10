@@ -4,7 +4,13 @@ import { searchMovies } from '../../API';
 import Loader from 'components/Loader/Loader';
 import LoadMoreButton from 'components/LoadMoreButton/LoadMoreButton';
 import SearchBar from 'components/SearchForm/SearchForm';
-import { MoviesContainer, MoviesGrid, MovieCard } from './Movies.styled';
+import {
+  MoviesContainer,
+  MoviesGrid,
+  MovieCard,
+  MovieLink,
+  MoviePoster,
+} from './Movies.styled';
 
 const Movies = () => {
   const [loading, setLoading] = useState(false);
@@ -82,9 +88,9 @@ const Movies = () => {
             movie =>
               movie.poster_path !== null && (
                 <MovieCard key={movie.id}>
-                  <img src={movie.poster_path} alt={movie.title} />
-                  <h3>{movie.title}</h3>
-                  <p>{movie.release_date}</p>
+                  <MovieLink to={`/movies/${movie.id}`}>
+                    <MoviePoster src={movie.poster_path} alt={movie.title} />
+                  </MovieLink>
                 </MovieCard>
               )
           )}

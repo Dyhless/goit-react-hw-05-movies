@@ -1,23 +1,32 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getTrendingMovies } from '../../API';
 import Loader from 'components/Loader/Loader';
+import {
+  Title,
+  MovieTitle,
+  MovieList,
+  MovieLink,
+  MoviePoster,
+} from './Home.styled';
+import { getTrendingMovies } from '../../API';
 
 const Home = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getTrendingMovies()
-      .then(data => {
-        setTrendingMovies(data);
+    const loadTrendingMovies = async () => {
+      try {
+        const movies = await getTrendingMovies();
+        setTrendingMovies(movies);
         setLoading(false);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Failed to fetch trending movies', error);
         setLoading(false);
-      });
+      }
+    };
+
+    loadTrendingMovies();
   }, []);
 
   return (
@@ -26,16 +35,24 @@ const Home = () => {
         <Loader />
       ) : (
         <>
-          <h1>Popular Movies</h1>
-          <ul>
+          <Title>Popular Movies</Title>
+          <MovieList>
             {trendingMovies.map(movie =>
               movie.title && movie.id ? (
                 <li key={movie.id}>
-                  <Link to={`movies/${movie.id}`}>{movie.title}</Link>
+                  <MovieLink to={`/movies/${movie.id}`}>
+                    <MoviePoster
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={movie.title}
+                    />
+                    <MovieTitle isLongTitle={movie.title.length > 25}>
+                      {movie.title}
+                    </MovieTitle>
+                  </MovieLink>
                 </li>
               ) : null
             )}
-          </ul>
+          </MovieList>
         </>
       )}
     </>

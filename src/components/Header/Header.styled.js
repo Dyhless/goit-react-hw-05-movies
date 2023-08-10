@@ -12,8 +12,8 @@ export const HeaderWrap = styled.header`
 
   padding-top: 6px;
   padding-bottom: 6px;
-  background-color: rgba(0, 0, 0, 0.6);
-  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.7);
   z-index: 10;
 `;
 
@@ -33,6 +33,6 @@ export const Link = styled(NavLink)`
   transition: color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    color: #c49dbf;
+    color: #00E6FA;
   }
 `;
