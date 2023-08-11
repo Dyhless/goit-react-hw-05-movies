@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useParams, Link, useLocation } from 'react-router-dom';
+import { Outlet, useParams, useLocation } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { getMovieDetails } from '../../API';
+import GoBackButton from '../../BackButton/BackButton';
 import {
-  BackButton,
   Container,
   Img,
   LinkInfo,
@@ -48,11 +48,7 @@ const MovieDetails = () => {
   return (
     <>
       <ToastContainer transition={Slide} />
-      <Link to="/movies" state={{ from: location }}>
-        <BackButton type="button" style={{ textDecoration: 'none' }}>
-          Go back
-        </BackButton>
-      </Link>
+      <GoBackButton />
       <Container>
         {poster_path ? (
           <Img
