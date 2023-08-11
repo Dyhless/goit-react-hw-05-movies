@@ -21,7 +21,7 @@ const Movies = () => {
   const [page, setPage] = useState(1);
   const [searchClicked, setSearchClicked] = useState(false);
   const [isLoadMoreBtnVisible, setIsLoadMoreBtnVisible] = useState(false);
-  const [query, setQuery] = useState(location.state?.query || ''); // Здесь изменили
+  const [query, setQuery] = useState(location.state?.query || '');
 
   useEffect(() => {
     if (query === '') {
