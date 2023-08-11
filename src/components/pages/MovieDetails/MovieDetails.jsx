@@ -48,7 +48,9 @@ const MovieDetails = () => {
     <>
       <ToastContainer transition={Slide} />
       <Link to="/movies">
-        <BackButton type="button">Go back</BackButton>
+        <BackButton type="button" style={{ textDecoration: 'none' }}>
+          Go back
+        </BackButton>
       </Link>
       <Container>
         {poster_path ? (
