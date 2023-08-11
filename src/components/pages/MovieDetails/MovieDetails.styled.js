@@ -17,6 +17,7 @@ const flexCenterStyles = `
 `;
 
 export const BackButton = styled.button`
+  text-decoration: none;
   margin: 90px 16px 20px 32px;
   ${flexCenterStyles}
   width: 120px;
