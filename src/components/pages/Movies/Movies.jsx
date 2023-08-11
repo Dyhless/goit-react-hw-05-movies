@@ -95,7 +95,10 @@ const Movies = () => {
               {movies.map(movie =>
                 movie.poster_path ? (
                   <li key={movie.id}>
-                    <MovieLink to={`/movies/${movie.id}`}>
+                    <MovieLink
+                      to={`/movies/${movie.id}`}
+                      state={{ from: location }}
+                    >
                       <MoviePoster
                         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                         alt={movie.title}
