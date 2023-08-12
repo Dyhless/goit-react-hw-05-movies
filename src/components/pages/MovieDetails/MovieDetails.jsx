@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet, useParams, useLocation } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { getMovieDetails } from '../../API';
 import GoBackButton from '../../BackButton/BackButton';
@@ -15,7 +15,6 @@ import {
 import { ToastContainer, Slide } from 'react-toastify';
 
 const MovieDetails = () => {
-  const location = useLocation();
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -44,7 +43,7 @@ const MovieDetails = () => {
   }
 
   const { title, popularity, overview, genres, poster_path } = movieDetails;
-  console.log(location);
+
   return (
     <>
       <ToastContainer transition={Slide} />
