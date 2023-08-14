@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 import { useEffect, useState } from 'react';
-import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { searchMovies } from '../../API';
 import Loader from 'components/Loader/Loader';
 import LoadMoreButton from 'components/LoadMoreButton/LoadMoreButton';
@@ -15,45 +16,50 @@ import {
 const MoviesPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [searchClicked, setSearchClicked] = useState(false);
   const [isLoadMoreBtnVisible, setIsLoadMoreBtnVisible] = useState(false);
-  const [query, setQuery] = useState(searchParams.get('query') || '');
+  const [query, setQuery] = useState('');
+  const [previousQuery, setPreviousQuery] = useState('');
 
   useEffect(() => {
-    if (query === '') {
-      return;
+    const queryParams = queryString.parse(location.search);
+    const initialQuery = queryParams.query || '';
+
+    setQuery(initialQuery);
+    setPreviousQuery(initialQuery);
+
+    if (initialQuery) {
+      searchMoviesByQuery(initialQuery);
     }
+  }, [location.search]);
 
-    const fetchMoviesByQuery = async () => {
-      setLoading(true);
-      try {
-        const data = await searchMovies(query);
-        const moviesWithAbsolutePaths = data.map(movie => ({
-          ...movie,
-          poster_path: movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-            : null,
-        }));
-        setMovies(moviesWithAbsolutePaths);
-        setIsLoadMoreBtnVisible(false);
-        setPage(1);
-      } catch (error) {
-        console.error('Failed to search movies', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMoviesByQuery();
-  }, [query]);
+  const searchMoviesByQuery = async query => {
+    setLoading(true);
+    try {
+      const data = await searchMovies(query);
+      const moviesWithAbsolutePaths = data.map(movie => ({
+        ...movie,
+        poster_path: movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+          : null,
+      }));
+      setMovies(moviesWithAbsolutePaths);
+      setIsLoadMoreBtnVisible(false);
+      setPage(1);
+    } catch (error) {
+      console.error('Failed to search movies', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const loadMore = async () => {
     setPage(prevPage => prevPage + 1);
     setLoading(true);
+
     try {
       const data = await searchMovies(query, page + 1);
       if (data.length === 0) {
@@ -74,19 +80,29 @@ const MoviesPage = () => {
     }
   };
 
-  const handleSearch = newQuery => {
+  const handleSearchSubmit = newQuery => {
+    setSearchClicked(true);
     setMovies([]);
     setPage(1);
+
+    // Получение предыдущего запроса из параметров строки запроса
+    const queryParams = queryString.parse(location.search);
+    const previousQuery = queryParams.query || '';
+
+    // Обновление параметров строки запроса с новым запросом
+    queryParams.query = newQuery;
+    navigate(`${location.pathname}?${queryString.stringify(queryParams)}`);
+
+    // Сохранение предыдущего запроса в состоянии
+    setPreviousQuery(previousQuery);
     setQuery(newQuery);
-    setSearchClicked(true);
-    setSearchParams({ query: newQuery });
   };
 
   const handleMovieClick = movieId => {
     navigate(`/movies/${movieId}`, {
       state: {
         from: location,
-        query: query,
+        query: previousQuery, // Используем предыдущий запрос
       },
     });
   };
@@ -97,7 +113,7 @@ const MoviesPage = () => {
         <Loader />
       ) : (
         <>
-          <SearchBar onSearch={handleSearch} />
+          <SearchBar initialValue={query} onSearch={handleSearchSubmit} />
           {searchClicked && (
             <MoviesGrid>
               {movies.map(movie =>

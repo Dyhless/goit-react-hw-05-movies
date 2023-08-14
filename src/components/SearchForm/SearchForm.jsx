@@ -1,25 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { SearchForm, SearchButton, SearchInput } from './SearchForm.styled';
+import { SearchInput, SearchButton, SearchForm } from './SearchForm.styled';
 
 const SearchBar = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
+  const [searchText, setSearchText] = useState('');
+  const [value, setValue] = useState('');
 
-  const handleSearch = event => {
-    event.preventDefault();
-    onSearch(query);
+  useEffect(() => {
+    setSearchText(value);
+  }, [value]);
+
+  const handleChange = e => setValue(e.target.value.toLowerCase());
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!searchText.trim()) {
+      alert('Fill in the request');
+      return;
+    }
+    setSearchText(searchText.trim());
+    onSearch(searchText.trim());
+    setValue('');
   };
 
   return (
-    <SearchForm onSubmit={handleSearch}>
-      <SearchInput
-        type="text"
-        value={query}
-        onChange={event => setQuery(event.target.value)}
-        placeholder="Search for movies..."
-      />
-      <SearchButton type="submit">Search</SearchButton>
-    </SearchForm>
+    <>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchInput
+          name="searchText"
+          type="text"
+          autoComplete="on"
+          autoFocus
+          placeholder="Search movies"
+          value={value}
+          onChange={handleChange}
+        />
+        <SearchButton type="submit">
+          <span>Search</span>
+        </SearchButton>
+      </SearchForm>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
-import { Suspense, useEffect, useState, useRef } from 'react';
-import { Outlet, useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import { Outlet, useParams, useLocation } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { getMovieDetails } from '../../API';
 import { ToastContainer, Slide } from 'react-toastify';
@@ -12,21 +12,21 @@ import {
   AddInfoList,
   List,
   BackButton,
+  BackLink,
 } from './MovieDetails.styled';
 
 const MovieDetails = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const backLinkLocationRef = useRef(location.state?.from ?? '/movies');
   const { movieId } = useParams();
-  const [movieDetails, setMovieDetails] = useState(null);
+  const [movieInfo, setMovieInfo] = useState({});
   const [loading, setLoading] = useState(true);
+  const backPrevLocation = useRef(location.state?.from ?? '/movies');
 
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
         const details = await getMovieDetails(movieId);
-        setMovieDetails(details);
+        setMovieInfo(details);
         setLoading(false);
       } catch (error) {
         console.error('Failed to fetch movie details', error);
@@ -41,27 +41,19 @@ const MovieDetails = () => {
     return <Loader />;
   }
 
-  if (!movieDetails) {
+  if (!movieInfo) {
     return <div>Loading...</div>;
   }
 
-  const { title, popularity, overview, genres, poster_path } = movieDetails;
-
-  const handleGoBack = () => {
-    navigate(backLinkLocationRef.current, {
-      state: {
-        query: location.state?.query || '',
-      },
-    });
-  };
+  const { title, popularity, overview, genres, poster_path } = movieInfo;
 
   return (
     <>
       <ToastContainer transition={Slide} />
-      <BackButton type="button" onClick={handleGoBack}>
-        Go back
+      <BackButton type="button">
+        <BackLink to={backPrevLocation.current}>Go back</BackLink>
       </BackButton>
-      {movieDetails && (
+      {movieInfo && (
         <Container>
           {poster_path ? (
             <Img
@@ -97,9 +89,7 @@ const MovieDetails = () => {
         </li>
       </AddInfoList>
       <Hr />
-      <Suspense fallback={<Loader />}>
-        <Outlet />
-      </Suspense>
+      <Outlet />
     </>
   );
 };
