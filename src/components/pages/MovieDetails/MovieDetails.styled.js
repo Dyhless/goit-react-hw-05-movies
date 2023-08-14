@@ -1,17 +1,21 @@
 import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-const linkStyles = `
-  text-decoration: none;
-  color: black;
+// const linkStyles = `
+//   text-decoration: none;
+//   color: black;
 
-  &:hover {
-    color: #00BFFF;
-  }
-`;
+//   &:hover {
+//     color: #00BFFF;
+//   }
+// `;
+
+// export const BackLink = styled(NavLink)`
+//   ${linkStyles};
+// `;
 
 export const BackLink = styled(NavLink)`
-  ${linkStyles};
+  text-decoration: none;
 `;
 
 export const BackButton = styled.button`
@@ -75,9 +79,14 @@ export const AddInfoList = styled.ul`
 `;
 
 export const LinkInfo = styled(Link)`
-  ${linkStyles};
+  text-decoration: none;
   font-weight: 600;
   font-size: 18px;
+  color: #120083;
+
+  &:hover {
+    color: #c49dbf;
+  }
 `;
 
 export const Hr = styled.hr`

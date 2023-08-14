@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { useLocation, useSearchParams, useNavigate } from 'react-router-dom';
 import { searchMovies } from '../../API';
 import Loader from 'components/Loader/Loader';
 import LoadMoreButton from 'components/LoadMoreButton/LoadMoreButton';
@@ -9,18 +10,18 @@ import {
   MovieTitle,
   MovieLink,
   MoviePoster,
-} from './Movies.styled';
+} from './MoviesPage.styled';
 
-const Movies = () => {
+const MoviesPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [searchClicked, setSearchClicked] = useState(false);
   const [isLoadMoreBtnVisible, setIsLoadMoreBtnVisible] = useState(false);
-  const [query, setQuery] = useState(location.state?.query || '');
+  const [query, setQuery] = useState(searchParams.get('query') || '');
 
   useEffect(() => {
     if (query === '') {
@@ -78,9 +79,15 @@ const Movies = () => {
     setPage(1);
     setQuery(newQuery);
     setSearchClicked(true);
+    setSearchParams({ query: newQuery });
+  };
 
-    navigate('/movies', {
-      state: { query: newQuery, location: location.pathname },
+  const handleMovieClick = movieId => {
+    navigate(`/movies/${movieId}`, {
+      state: {
+        from: location,
+        query: query,
+      },
     });
   };
 
@@ -97,10 +104,9 @@ const Movies = () => {
                 movie.poster_path ? (
                   <li key={movie.id}>
                     <MovieLink
-                      to={{
-                        pathname: `/movies/${movie.id}`,
-                        state: { from: location, query: query },
-                      }}
+                      to={`/movies/${movie.id}`}
+                      id={movie.id}
+                      onClick={() => handleMovieClick(movie.id)}
                     >
                       <MoviePoster
                         src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -122,4 +128,14 @@ const Movies = () => {
   );
 };
 
-export default Movies;
+MoviesPage.propTypes = {
+  filteredMovies: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+      poster_path: PropTypes.string,
+    })
+  ),
+};
+
+export default MoviesPage;

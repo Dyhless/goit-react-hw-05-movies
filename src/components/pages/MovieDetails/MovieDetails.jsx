@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { Suspense, useEffect, useState, useRef } from 'react';
+import { Outlet, useParams, useLocation, useNavigate } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { getMovieDetails } from '../../API';
+import { ToastContainer, Slide } from 'react-toastify';
 import {
   Container,
   Img,
@@ -12,11 +13,11 @@ import {
   List,
   BackButton,
 } from './MovieDetails.styled';
-import { ToastContainer, Slide } from 'react-toastify';
 
 const MovieDetails = () => {
   const location = useLocation();
-  const backLinkLocation = useRef(location.state?.from ?? '/movies');
+  const navigate = useNavigate();
+  const backLinkLocationRef = useRef(location.state?.from ?? '/movies');
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,12 +47,20 @@ const MovieDetails = () => {
 
   const { title, popularity, overview, genres, poster_path } = movieDetails;
 
+  const handleGoBack = () => {
+    navigate(backLinkLocationRef.current, {
+      state: {
+        query: location.state?.query || '',
+      },
+    });
+  };
+
   return (
     <>
       <ToastContainer transition={Slide} />
-      <Link to={backLinkLocation.current}>
-        <BackButton type="button">Go back</BackButton>
-      </Link>
+      <BackButton type="button" onClick={handleGoBack}>
+        Go back
+      </BackButton>
       {movieDetails && (
         <Container>
           {poster_path ? (
@@ -88,6 +97,9 @@ const MovieDetails = () => {
         </li>
       </AddInfoList>
       <Hr />
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
     </>
   );
 };
