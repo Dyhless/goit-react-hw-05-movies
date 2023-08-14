@@ -1,18 +1,5 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-
-// const linkStyles = `
-//   text-decoration: none;
-//   color: black;
-
-//   &:hover {
-//     color: #00BFFF;
-//   }
-// `;
-
-// export const BackLink = styled(NavLink)`
-//   ${linkStyles};
-// `;
 
 export const BackLink = styled(NavLink)`
   text-decoration: none;
@@ -78,7 +65,7 @@ export const AddInfoList = styled.ul`
   padding: 0;
 `;
 
-export const LinkInfo = styled(Link)`
+export const LinkInfo = styled(NavLink)`
   text-decoration: none;
   font-weight: 600;
   font-size: 18px;

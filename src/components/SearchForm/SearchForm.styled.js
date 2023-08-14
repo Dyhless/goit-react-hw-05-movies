@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
-const commonButtonStyles = `
+export const SearchButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100px;
   padding: 10px;
   margin-left: 10px;
+  margin-right: 16px;
   border-radius: 15px;
   border: none;
   font-size: 18px;
@@ -27,11 +28,6 @@ export const SearchForm = styled.form`
   justify-content: center;
   margin-bottom: 20px;
   margin-top: 75px;
-`;
-
-export const SearchButton = styled.button`
-  ${commonButtonStyles}
-  margin-right: 16px;
 `;
 
 export const SearchInput = styled.input`

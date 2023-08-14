@@ -22,33 +22,24 @@ const MoviesPage = () => {
   const [searchClicked, setSearchClicked] = useState(false);
   const [isLoadMoreBtnVisible, setIsLoadMoreBtnVisible] = useState(false);
   const [query, setQuery] = useState('');
-  const [previousQuery, setPreviousQuery] = useState('');
 
   useEffect(() => {
     const queryParams = queryString.parse(location.search);
     const initialQuery = queryParams.query || '';
 
     setQuery(initialQuery);
-    setPreviousQuery(initialQuery);
-
     if (initialQuery) {
-      searchMoviesByQuery(initialQuery);
+      fetchMoviesByQuery(initialQuery);
     }
   }, [location.search]);
 
-  const searchMoviesByQuery = async query => {
+  const fetchMoviesByQuery = async query => {
     setLoading(true);
     try {
       const data = await searchMovies(query);
-      const moviesWithAbsolutePaths = data.map(movie => ({
-        ...movie,
-        poster_path: movie.poster_path
-          ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-          : null,
-      }));
-      setMovies(moviesWithAbsolutePaths);
-      setIsLoadMoreBtnVisible(false);
+      setMovies(data);
       setPage(1);
+      setIsLoadMoreBtnVisible(data.length > 0);
     } catch (error) {
       console.error('Failed to search movies', error);
     } finally {
@@ -56,28 +47,8 @@ const MoviesPage = () => {
     }
   };
 
-  const loadMore = async () => {
+  const loadMore = () => {
     setPage(prevPage => prevPage + 1);
-    setLoading(true);
-
-    try {
-      const data = await searchMovies(query, page + 1);
-      if (data.length === 0) {
-        setIsLoadMoreBtnVisible(false);
-        return;
-      }
-      const moviesWithAbsolutePaths = data.map(movie => ({
-        ...movie,
-        poster_path: movie.poster_path
-          ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-          : null,
-      }));
-      setMovies(prevMovies => [...prevMovies, ...moviesWithAbsolutePaths]);
-    } catch (error) {
-      console.error('Failed to load more movies', error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleSearchSubmit = newQuery => {
@@ -85,16 +56,8 @@ const MoviesPage = () => {
     setMovies([]);
     setPage(1);
 
-    // Получение предыдущего запроса из параметров строки запроса
-    const queryParams = queryString.parse(location.search);
-    const previousQuery = queryParams.query || '';
-
-    // Обновление параметров строки запроса с новым запросом
-    queryParams.query = newQuery;
+    const queryParams = { query: newQuery };
     navigate(`${location.pathname}?${queryString.stringify(queryParams)}`);
-
-    // Сохранение предыдущего запроса в состоянии
-    setPreviousQuery(previousQuery);
     setQuery(newQuery);
   };
 
@@ -102,7 +65,7 @@ const MoviesPage = () => {
     navigate(`/movies/${movieId}`, {
       state: {
         from: location,
-        query: previousQuery, // Используем предыдущий запрос
+        query: query,
       },
     });
   };
@@ -116,28 +79,34 @@ const MoviesPage = () => {
           <SearchBar initialValue={query} onSearch={handleSearchSubmit} />
           {searchClicked && (
             <MoviesGrid>
-              {movies.map(movie =>
-                movie.poster_path ? (
-                  <li key={movie.id}>
-                    <MovieLink
-                      to={`/movies/${movie.id}`}
-                      id={movie.id}
-                      onClick={() => handleMovieClick(movie.id)}
-                    >
-                      <MoviePoster
-                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                        alt={movie.title}
-                      />
-                      <MovieTitle data-is-long-title={movie.title.length > 25}>
-                        {movie.title}
-                      </MovieTitle>
-                    </MovieLink>
-                  </li>
-                ) : null
+              {movies.map(
+                movie =>
+                  movie.poster_path && (
+                    <li key={movie.id}>
+                      <MovieLink
+                        to={`/movies/${movie.id}`}
+                        id={movie.id}
+                        onClick={() => handleMovieClick(movie.id)}
+                        state={{ from: location }}
+                      >
+                        <MoviePoster
+                          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                          alt={movie.title}
+                        />
+                        <MovieTitle
+                          data-is-long-title={movie.title.length > 25}
+                        >
+                          {movie.title}
+                        </MovieTitle>
+                      </MovieLink>
+                    </li>
+                  )
               )}
             </MoviesGrid>
           )}
-          {isLoadMoreBtnVisible && <LoadMoreButton onClick={loadMore} />}
+          {isLoadMoreBtnVisible && page > 1 && (
+            <LoadMoreButton onClick={loadMore}>Load more</LoadMoreButton>
+          )}
         </>
       )}
     </>

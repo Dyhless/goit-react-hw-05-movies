@@ -32,16 +32,14 @@ const Home = () => {
     loadTrendingMovies();
   }, []);
 
-  const filteredMovies = trendingMovies.filter(
-    movie => movie.title && movie.id
-  );
+  const filteredMovies = trendingMovies.filter(({ title, id }) => title && id);
 
   return (
     <>
       {loading ? (
         <Loader />
       ) : (
-        <>
+        <div>
           <Title>Popular Movies</Title>
           <MovieList>
             {filteredMovies.map(movie => (
@@ -61,7 +59,7 @@ const Home = () => {
               </li>
             ))}
           </MovieList>
-        </>
+        </div>
       )}
     </>
   );

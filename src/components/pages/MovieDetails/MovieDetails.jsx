@@ -18,9 +18,9 @@ import {
 const MovieDetails = () => {
   const location = useLocation();
   const { movieId } = useParams();
+  const backPrevLocation = useRef(location.state?.from ?? '/movies');
   const [movieInfo, setMovieInfo] = useState({});
   const [loading, setLoading] = useState(true);
-  const backPrevLocation = useRef(location.state?.from ?? '/movies');
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -37,14 +37,6 @@ const MovieDetails = () => {
     fetchMovieData();
   }, [movieId]);
 
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (!movieInfo) {
-    return <div>Loading...</div>;
-  }
-
   const { title, popularity, overview, genres, poster_path } = movieInfo;
 
   return (
@@ -53,30 +45,34 @@ const MovieDetails = () => {
       <BackButton type="button">
         <BackLink to={backPrevLocation.current}>Go back</BackLink>
       </BackButton>
-      {movieInfo && (
-        <Container>
-          {poster_path ? (
-            <Img
-              width="300px"
-              src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-              alt={title}
-            />
-          ) : (
-            <div>No poster available</div>
-          )}
-          <div>
-            <h1>{title}</h1>
-            <p>User score: {popularity}</p>
-            <h2>Overview</h2>
-            <p>{overview}</p>
-            <h2>Genres</h2>
-            <List>
-              {genres.map(genre => (
-                <li key={genre.id}>{genre.name}</li>
-              ))}
-            </List>
-          </div>
-        </Container>
+      {loading ? (
+        <Loader />
+      ) : (
+        movieInfo && (
+          <Container>
+            {poster_path ? (
+              <Img
+                width="300px"
+                src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+                alt={title}
+              />
+            ) : (
+              <div>No poster available</div>
+            )}
+            <div>
+              <h1>{title}</h1>
+              <p>User score: {popularity}</p>
+              <h2>Overview</h2>
+              <p>{overview}</p>
+              <h2>Genres</h2>
+              <List>
+                {genres.map(genre => (
+                  <li key={genre.id}>{genre.name}</li>
+                ))}
+              </List>
+            </div>
+          </Container>
+        )
       )}
       <Hr />
       <SubTitle>Additional information</SubTitle>
