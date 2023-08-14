@@ -6,6 +6,8 @@ const GoBackButton = () => {
   const location = useLocation();
   const backLinkLocationRef = useRef(location.state?.from || '/movies');
 
+  console.log(location);
+
   return (
     <Link to={backLinkLocationRef.current}>
       <BackButton type="button">Go back</BackButton>
