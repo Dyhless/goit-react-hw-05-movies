@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { searchMovies } from '../../API';
@@ -80,7 +79,9 @@ const Movies = () => {
     setQuery(newQuery);
     setSearchClicked(true);
 
-    navigate('/movies', { state: { query: newQuery } });
+    navigate('/movies', {
+      state: { query: newQuery, location: location.pathname },
+    });
   };
 
   return (
@@ -98,7 +99,7 @@ const Movies = () => {
                     <MovieLink
                       to={{
                         pathname: `/movies/${movie.id}`,
-                        state: { from: location },
+                        state: { from: location, query: query },
                       }}
                     >
                       <MoviePoster
@@ -119,16 +120,6 @@ const Movies = () => {
       )}
     </>
   );
-};
-
-Movies.propTypes = {
-  filteredMovies: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
-      poster_path: PropTypes.string,
-    })
-  ),
 };
 
 export default Movies;

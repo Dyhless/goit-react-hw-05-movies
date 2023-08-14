@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { getMovieDetails } from '../../API';
-import GoBackButton from '../../BackButton/BackButton';
 import {
   Container,
   Img,
@@ -11,10 +10,13 @@ import {
   SubTitle,
   AddInfoList,
   List,
+  BackButton,
 } from './MovieDetails.styled';
 import { ToastContainer, Slide } from 'react-toastify';
 
 const MovieDetails = () => {
+  const location = useLocation();
+  const backLinkLocation = useRef(location.state?.from ?? '/movies');
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -47,42 +49,45 @@ const MovieDetails = () => {
   return (
     <>
       <ToastContainer transition={Slide} />
-      <GoBackButton />
-      <Container>
-        {poster_path ? (
-          <Img
-            width="300px"
-            src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-            alt={title}
-          />
-        ) : (
-          <div>No poster available</div>
-        )}
-        <div>
-          <h1>{title}</h1>
-          <p>User score: {popularity}</p>
-          <h2>Overview</h2>
-          <p>{overview}</p>
-          <h2>Genres</h2>
-          <List>
-            {genres.map(genre => (
-              <li key={genre.id}>{genre.name}</li>
-            ))}
-          </List>
-        </div>
-      </Container>
+      <Link to={backLinkLocation.current}>
+        <BackButton type="button">Go back</BackButton>
+      </Link>
+      {movieDetails && (
+        <Container>
+          {poster_path ? (
+            <Img
+              width="300px"
+              src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+              alt={title}
+            />
+          ) : (
+            <div>No poster available</div>
+          )}
+          <div>
+            <h1>{title}</h1>
+            <p>User score: {popularity}</p>
+            <h2>Overview</h2>
+            <p>{overview}</p>
+            <h2>Genres</h2>
+            <List>
+              {genres.map(genre => (
+                <li key={genre.id}>{genre.name}</li>
+              ))}
+            </List>
+          </div>
+        </Container>
+      )}
       <Hr />
       <SubTitle>Additional information</SubTitle>
       <AddInfoList>
         <li>
-          <LinkInfo to={`/movies/${movieId}/cast`}>Cast</LinkInfo>
+          <LinkInfo to="cast">Cast</LinkInfo>
         </li>
         <li>
-          <LinkInfo to={`/movies/${movieId}/reviews`}>Reviews</LinkInfo>
+          <LinkInfo to="reviews">Reviews</LinkInfo>
         </li>
       </AddInfoList>
       <Hr />
-      <Outlet />
     </>
   );
 };
