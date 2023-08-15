@@ -1,7 +1,7 @@
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const BackLink = styled(NavLink)`
+export const BackLink = styled(Link)`
   text-decoration: none;
 `;
 
@@ -65,7 +65,7 @@ export const AddInfoList = styled.ul`
   padding: 0;
 `;
 
-export const LinkInfo = styled(NavLink)`
+export const LinkInfo = styled(Link)`
   text-decoration: none;
   font-weight: 600;
   font-size: 18px;

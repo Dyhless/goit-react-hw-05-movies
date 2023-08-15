@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useParams, useLocation } from 'react-router-dom';
 import Loader from 'components/Loader/Loader';
 import { getMovieDetails } from '../../API';
@@ -18,7 +18,6 @@ import {
 const MovieDetails = () => {
   const location = useLocation();
   const { movieId } = useParams();
-  const backPrevLocation = useRef(location.state?.from ?? '/movies');
   const [movieInfo, setMovieInfo] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -38,13 +37,14 @@ const MovieDetails = () => {
   }, [movieId]);
 
   const { title, popularity, overview, genres, poster_path } = movieInfo;
+  const backPrevLocation = location.state?.from ?? '/movies';
 
   return (
     <>
       <ToastContainer transition={Slide} />
-      <BackButton type="button">
-        <BackLink to={backPrevLocation.current}>Go back</BackLink>
-      </BackButton>
+      <BackLink to={backPrevLocation}>
+        <BackButton type="button">Go back</BackButton>
+      </BackLink>
       {loading ? (
         <Loader />
       ) : (

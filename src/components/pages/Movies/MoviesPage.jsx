@@ -6,6 +6,7 @@ import { searchMovies } from '../../API';
 import Loader from 'components/Loader/Loader';
 import LoadMoreButton from 'components/LoadMoreButton/LoadMoreButton';
 import SearchBar from 'components/SearchForm/SearchForm';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   MoviesGrid,
   MovieTitle,
@@ -16,22 +17,27 @@ import {
 const MoviesPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const queryParams = queryString.parse(location.search);
+  const initialQuery = queryParams.query || '';
+
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [searchClicked, setSearchClicked] = useState(false);
   const [isLoadMoreBtnVisible, setIsLoadMoreBtnVisible] = useState(false);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(initialQuery);
 
   useEffect(() => {
-    const queryParams = queryString.parse(location.search);
-    const initialQuery = queryParams.query || '';
-
-    setQuery(initialQuery);
-    if (initialQuery) {
-      fetchMoviesByQuery(initialQuery);
+    if (query) {
+      fetchMoviesByQuery(query);
     }
-  }, [location.search]);
+  }, [query, page]);
+
+  useEffect(() => {
+    if (initialQuery) {
+      setSearchClicked(true);
+    }
+  }, [initialQuery]);
 
   const fetchMoviesByQuery = async query => {
     setLoading(true);
@@ -57,26 +63,21 @@ const MoviesPage = () => {
     setPage(1);
 
     const queryParams = { query: newQuery };
-    navigate(`${location.pathname}?${queryString.stringify(queryParams)}`);
+    navigate(`/movies?${queryString.stringify(queryParams)}`);
     setQuery(newQuery);
   };
 
-  const handleMovieClick = movieId => {
-    navigate(`/movies/${movieId}`, {
-      state: {
-        from: location,
-        query: query,
-      },
-    });
+  const chooseURL = id => {
+    return location.pathname === '/movies' ? `${id}` : `movies/${id}`;
   };
 
   return (
     <>
+      <SearchBar initialValue={query} onSearch={handleSearchSubmit} />
       {loading ? (
         <Loader />
       ) : (
         <>
-          <SearchBar initialValue={query} onSearch={handleSearchSubmit} />
           {searchClicked && (
             <MoviesGrid>
               {movies.map(
@@ -84,9 +85,7 @@ const MoviesPage = () => {
                   movie.poster_path && (
                     <li key={movie.id}>
                       <MovieLink
-                        to={`/movies/${movie.id}`}
-                        id={movie.id}
-                        onClick={() => handleMovieClick(movie.id)}
+                        to={chooseURL(movie.id)}
                         state={{ from: location }}
                       >
                         <MoviePoster

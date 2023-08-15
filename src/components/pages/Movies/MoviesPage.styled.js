@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const MoviesGrid = styled.ul`
   @media screen and (max-width: 475.99px) {
@@ -21,7 +21,7 @@ export const MoviesGrid = styled.ul`
    
 `;
 
-export const MovieLink = styled(NavLink)`
+export const MovieLink = styled(Link)`
   width: 200px;
   height: auto;
   display: flex;
