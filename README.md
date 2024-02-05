@@ -1,4 +1,4 @@
-## React Router. React router and code separation
+## React Router. React router and code separation.
 
 ### Task - Admission criteria
 
