@@ -21,7 +21,7 @@ as a starting point for your application.
 - JS-code is clean and clear, Prettier is used
 - Styling is done by CSS modules or Styled Components.
 
-### Movie Search.
+### Movie Search
 
 Create a basic routing for a movie search and storage application. Preview
 working application
@@ -47,7 +47,7 @@ will be used in this work.
 
 [Documentation link](https://developers.themoviedb.org/3/getting-started/introduction)
 
-### Routes.
+### Routes
 
 The app should have the following routes. If a user has accessed a non-existent
 route, it must be redirected to the home page.
