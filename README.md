@@ -52,7 +52,7 @@ will be used in this work.
 The app should have the following routes. If a user has accessed a non-existent
 route, it must be redirected to the home page.
 
-- The ``Home'' component, the home page with a list of popular movies.
+- The 'Home' component, the home page with a list of popular movies.
 - The `/'/movies'` - component Movies, a page of movie search by keyword.
   keyword.
 - `/movies/:movieId'` - component MovieDetails, a page with detailed information
